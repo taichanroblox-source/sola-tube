@@ -1,0 +1,54 @@
+/* SOLA TUBE sunset skin; layered after imported UI styles. */
+:root {
+  --bg: #150f21;
+  --surface: rgba(43, 26, 53, .92);
+  --surface2: rgba(67, 34, 64, .9);
+  --border: rgba(255, 165, 157, .22);
+  --border-glow: rgba(255, 169, 135, .52);
+  --accent: #e76e90;
+  --accent-bright: #ffa17f;
+  --cyan: #ffb674;
+  --pink: #f17b9f;
+  --text: #fff4f1;
+  --muted: #cbb5c9;
+  --card-bg: rgba(36, 20, 47, .85);
+  --glow-purple: rgba(238, 112, 155, .3);
+  --glow-cyan: rgba(255, 168, 116, .2);
+  --skeleton-base: rgba(50, 30, 60, .9);
+  --skeleton-shine: rgba(93, 48, 83, .9);
+  --accent-rgb: 231, 110, 144;
+  --accent2-rgb: 255, 161, 127;
+  --cyan-rgb: 255, 182, 116;
+  --accent-glow-rgb: 255, 161, 127;
+}
+body {
+  background: radial-gradient(ellipse at 85% -20%, rgba(242,111,134,.23), transparent 50%),
+    radial-gradient(ellipse at 10% 15%, rgba(255,177,113,.1), transparent 38%),
+    linear-gradient(155deg,#160f23,#25162f 70%,#27162c);
+  background-attachment: fixed;
+  color: var(--text);
+}
+.app-sidebar {background: rgba(31, 19, 42, .98);border-right: 1px solid var(--border)}
+.sidebar-logo,.logo,.home-hero-logo {font-weight: 900;letter-spacing: -.035em}
+.sidebar-logo .logo-inv,.logo .logo-inv,.home-hero-logo .logo-inv {
+  color: #fff2e9 !important; background: none !important;
+  -webkit-text-fill-color: #fff2e9 !important;
+  text-shadow: 0 0 25px rgba(255,170,130,.18);
+}
+.sidebar-logo .logo-tube,.logo .logo-tube,.home-hero-logo .logo-tube {
+  color: #ffa783 !important;
+  background: linear-gradient(110deg,#ffd097,#ff9c83,#f183bd) !important;
+  -webkit-background-clip: text !important;background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+.home-hero {
+  background: radial-gradient(ellipse at 90% 0%,rgba(255,181,111,.25),transparent 55%),
+    linear-gradient(135deg,rgba(104,46,93,.72),rgba(53,28,68,.66)) !important;
+  border: 1px solid rgba(255,177,151,.25) !important;
+  box-shadow: 0 24px 70px -30px rgba(248,110,149,.28);
+}
+.sidebar-nav-link:hover,.header-shortcut:hover {color: #ffbc97}
+button,a,input {accent-color: #eb799a}
+a:focus-visible,button:focus-visible,input:focus-visible {
+  outline: 2px solid #ffbc97;outline-offset: 3px
+}
