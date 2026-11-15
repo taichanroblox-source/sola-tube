@@ -3,8 +3,7 @@ from contextlib import asynccontextmanager
 import httpx
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import RedirectResponse
-from urllib.parse import quote
+from pathlib import Path
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.gzip import GZipMiddleware
 
@@ -27,6 +26,19 @@ async def lifespan(app: FastAPI):
     yield
     await core.http_client.aclose()
 
+# Reassemble the upstream 6.4 MB standalone HTML file from smaller tracked parts.
+# This avoids connector upload-size limits while preserving its content.
+def _assemble_large_html():
+    target = Path("templates/tool/youtube/xerox.html")
+    pieces = sorted(Path("templates/tool/youtube/xerox_parts").glob("part_*.txt"))
+    if not target.exists() and len(pieces) == 21:
+        with target.open("w", encoding="utf-8", newline="") as output:
+            for piece in pieces:
+                output.write(piece.read_text(encoding="utf-8"))
+
+
+_assemble_large_html()
+
 app = FastAPI(title="SOLA TUBE", lifespan=lifespan)
 
 for router in [
@@ -37,17 +49,7 @@ for router in [
     app.include_router(router)
 
 app.mount("/static", StaticFiles(directory="templates/static"), name="static")
-# Image assets are temporarily linked to the approved upstream repository.
-# They can be copied locally later to remove this dependency.
-@app.get("/photo/{asset_path:path}")
-async def legacy_photo(asset_path: str):
-    if ".." in asset_path.split("/") or not asset_path.lower().endswith((".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg")):
-        from fastapi import HTTPException
-        raise HTTPException(status_code=404)
-    return RedirectResponse(
-        "https://raw.githubusercontent.com/kuru-bana/Choco-Tube-Plus/main/photo/" + quote(asset_path, safe="/"),
-        status_code=302,
-    )
+app.mount("/photo", StaticFiles(directory="photo"), name="photo")
 
 @app.get("/health")
 async def health():
