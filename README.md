@@ -1,3 +1,33 @@
+# SOLA TUBE
+
+SOLAブランドの動画サイト。元の [Choco-Tube-Plus](https://github.com/kuru-bana/Choco-Tube-Plus) の構成・ソースをベースに、SOLAの夕焼けテーマと公開ページを実装しています。
+
+> 元プロジェクトの作者からのコピー許可については、依頼者から許可済みとの申告を受けています。元プロジェクトの著作権・各同梱コンテンツの権利は、それぞれの権利者に帰属します。
+
+## 起動・Renderへの公開
+
+- 言語: Python（FastAPI）
+- Build Command: `pip install -r requirements.txt`
+- Start Command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+- Render Blueprint: `render.yaml`
+- Health Check: `/health`
+
+## 主な機能
+
+ホーム、トレンド、検索、動画視聴、ショート、チャンネル、ライブラリ、設定など。動画情報と再生ストリームの取得は、元プロジェクトが利用している外部APIに依存します。外部APIの状態、YouTube側の制限等によって、一部の動画が表示・再生できない場合があります。
+
+## 現時点の移植上の注意
+
+- Python・HTML・CSS・JSの主要ソースは取り込み済みです。
+- 画像素材は当面、元リポジトリのGitHub raw URLへリダイレクトしています。将来は画像を適法に再配置する必要があります。
+- 非常に大きい `templates/tool/youtube/xerox.html` は未移植です。該当ツールは使用できません。
+- 元ソース内の共通パスワード・固定認証Cookieを使う認証方式は採用していません。公開動画ページとして実装しています。
+- 動作確認・セキュリティレビューは本番公開前に実施してください。
+
+---
+
+## 元プロジェクトのREADME（記録）
+
 # Choco-tube-plus
 
 YouTubeのプライバシーに配慮したフロントエンド。<br>
