@@ -3,6 +3,8 @@ from contextlib import asynccontextmanager
 import httpx
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import RedirectResponse
+from urllib.parse import quote
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.gzip import GZipMiddleware
 
@@ -35,7 +37,17 @@ for router in [
     app.include_router(router)
 
 app.mount("/static", StaticFiles(directory="templates/static"), name="static")
-app.mount("/photo", StaticFiles(directory="photo"), name="photo")
+# Image assets are temporarily linked to the approved upstream repository.
+# They can be copied locally later to remove this dependency.
+@app.get("/photo/{asset_path:path}")
+async def legacy_photo(asset_path: str):
+    if ".." in asset_path.split("/") or not asset_path.lower().endswith((".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg")):
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404)
+    return RedirectResponse(
+        "https://raw.githubusercontent.com/kuru-bana/Choco-Tube-Plus/main/photo/" + quote(asset_path, safe="/"),
+        status_code=302,
+    )
 
 @app.get("/health")
 async def health():
